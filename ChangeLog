@@ -1,0 +1,4 @@
+2005-10-16  Donnie Berkholz  <spyderous@gentoo.org>
+
+	* Makefile.am: Bug #4725 <https://bugs.freedesktop.org/show_bug.cgi?id=4725>
+	Detect cf files in the correct location and mirror the monolithic install.

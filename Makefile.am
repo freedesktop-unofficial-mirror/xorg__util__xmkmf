@@ -19,7 +19,7 @@
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
 
-XCONFDIR = $(sysconfdir)/X11/config/cf
+XCONFDIR = $(libdir)/X11/config
 
 bin_SCRIPTS = xmkmf
 
@@ -27,7 +27,8 @@ dist_man1_MANS = \
         xmkmf.man
 
 xmkmf: xmkmf.cpp
-	$(RAWCPP) -DCONFIGDIRSPEC=$(XCONFDIR) $(srcdir)/xmkmf.cpp | $(SED) -e /^\#/d | $(SED) -e s/XCOMM/\#/ > $@
+	$(RAWCPP) -DCONFIGDIRSPEC='"-I$(XCONFDIR)"' $(srcdir)/xmkmf.cpp | $(SED) -e /^\#/d | $(SED) -e s/XCOMM/\#/ > $@
+#	$(RAWCPP) -DCONFIGDIRSPEC=$(XCONFDIR) $(srcdir)/xmkmf.cpp | $(SED) -e /^\#/d | $(SED) -e s/XCOMM/\#/ > $@
 
 CLEANFILES = xmkmf
 
