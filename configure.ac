@@ -28,10 +28,10 @@ AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
 AC_PROG_CPP
-AC_PATH_PROGS(RAWCPP, [cpp], [$(CPP)], 
-   [$PATH:/bin:/usr/bin:/usr/lib:/usr/libexec:/usr/ccs/lib:/usr/ccs/lbin:/lib])
+XORG_PROG_RAWCPP
 AC_PATH_PROG(SED, sed)
 
+XORG_MANPAGE_SECTIONS
 XORG_RELEASE_VERSION
 
 AC_OUTPUT([Makefile])

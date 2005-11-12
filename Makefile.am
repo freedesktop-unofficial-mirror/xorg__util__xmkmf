@@ -23,9 +23,6 @@ XCONFDIR = $(libdir)/X11/config
 
 bin_SCRIPTS = xmkmf
 
-dist_man1_MANS = \
-        xmkmf.man
-
 xmkmf: xmkmf.cpp
 	$(RAWCPP) -DCONFIGDIRSPEC='"-I$(XCONFDIR)"' $(srcdir)/xmkmf.cpp | $(SED) -e /^\#/d | $(SED) -e s/XCOMM/\#/ > $@
 #	$(RAWCPP) -DCONFIGDIRSPEC=$(XCONFDIR) $(srcdir)/xmkmf.cpp | $(SED) -e /^\#/d | $(SED) -e s/XCOMM/\#/ > $@
@@ -33,3 +30,37 @@ xmkmf: xmkmf.cpp
 CLEANFILES = xmkmf
 
 EXTRA_DIST = xmkmf.cpp
+
+# Man page
+appmandir =  $(mandir)/man$(APP_MAN_SUFFIX)
+
+appman_SOURCES = xmkmf.man
+appman_DATA = $(appman_SOURCES:man=@APP_MAN_SUFFIX@)
+
+EXTRA_DIST += $(appman_SOURCES)
+CLEANFILES += $(appman_DATA)
+
+SED = sed
+
+# Strings to replace in man pages
+XORGRELSTRING = @PACKAGE_STRING@
+  XORGMANNAME = X Version 11
+
+MAN_SUBSTS = \
+	-e 's|__vendorversion__|"$(XORGRELSTRING)" "$(XORGMANNAME)"|' \
+	-e 's|__xorgversion__|"$(XORGRELSTRING)" "$(XORGMANNAME)"|' \
+	-e 's|__xservername__|Xorg|g' \
+	-e 's|__xconfigfile__|xorg.conf|g' \
+	-e 's|__projectroot__|$(prefix)|g' \
+	-e 's|__apploaddir__|$(appdefaultdir)|' \
+	-e 's|__appmansuffix__|$(APP_MAN_SUFFIX)|g' \
+	-e 's|__libmansuffix__|$(LIB_MAN_SUFFIX)|g' \
+	-e 's|__adminmansuffix__|$(ADMIN_MAN_SUFFIX)|g' \
+	-e 's|__miscmansuffix__|$(MISC_MAN_SUFFIX)|g' \
+	-e 's|__filemansuffix__|$(FILE_MAN_SUFFIX)|g' \
+	-e 's|__cpp__|$(RAWCPP)|g'
+
+SUFFIXES = .$(APP_MAN_SUFFIX) .man
+
+.man.$(APP_MAN_SUFFIX):
+	sed $(MAN_SUBSTS) < $< > $@
