@@ -32,7 +32,7 @@ CLEANFILES = xmkmf
 EXTRA_DIST = xmkmf.cpp
 
 # Man page
-appmandir =  $(mandir)/man$(APP_MAN_SUFFIX)
+appmandir = $(APP_MAN_DIR)
 
 appman_SOURCES = xmkmf.man
 appman_DATA = $(appman_SOURCES:man=@APP_MAN_SUFFIX@)
